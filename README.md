@@ -1,8 +1,10 @@
 # Wine Quality Prediction
-<img src="https://img.shields.io/badge/Python-3.10-blue?logo=python">
-<img src="https://img.shields.io/badge/Pandas-Data%20Analysis-black?logo=pandas">
-<img src="https://img.shields.io/badge/NumPy-Numerical%20Computing-blue?logo=numpy">
-<img src="https://img.shields.io/badge/Scikit--Learn-Machine%20Learning-orange?logo=scikitlearn">
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.10-blue?logo=python">
+  <img src="https://img.shields.io/badge/Pandas-Data%20Analysis-black?logo=pandas">
+  <img src="https://img.shields.io/badge/NumPy-Numerical%20Computing-blue?logo=numpy">
+  <img src="https://img.shields.io/badge/Scikit--Learn-Machine%20Learning-orange?logo=scikitlearn">
+</p>
 Machine learning project to predict wine quality scores from physicochemical features using Python and Scikit-learn.
 
 ## 🚀 Features
