@@ -142,6 +142,20 @@ After training, run:
 python src/predict.py
 ```
 
+## Use the Web Prediction Page
+
+Start the local web app:
+
+```bash
+python src/web_app.py
+```
+
+Then open:
+
+```text
+http://127.0.0.1:8000
+```
+
 Or pass custom values:
 
 ```bash
