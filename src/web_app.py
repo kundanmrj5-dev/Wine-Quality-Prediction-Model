@@ -274,6 +274,53 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
       backdrop-filter: blur(6px);
     }}
 
+    .model-info {{
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }}
+
+    .info-panel {{
+      padding: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      border-radius: 8px;
+      background: rgba(255, 250, 246, 0.9);
+      box-shadow: 0 18px 40px rgba(10, 3, 6, 0.2);
+    }}
+
+    .info-panel h2 {{
+      margin: 0 0 8px;
+      font-size: 20px;
+      color: #2b121a;
+      letter-spacing: 0;
+    }}
+
+    .info-panel p {{
+      font-size: 15px;
+    }}
+
+    .metric-list {{
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }}
+
+    .metric-list div {{
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 9px 10px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.64);
+      color: var(--muted);
+      font-size: 14px;
+    }}
+
+    .metric-list strong {{
+      color: var(--accent-dark);
+    }}
+
     .grid {{
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -403,6 +450,10 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
       .grid {{
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }}
+
+      .model-info {{
+        grid-template-columns: 1fr;
+      }}
     }}
 
     @media (max-width: 560px) {{
@@ -464,6 +515,21 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
         </div>
       </div>
     </header>
+
+    <section class="model-info">
+      <article class="info-panel">
+        <h2>What Random Forest Means</h2>
+        <p>Random Forest is the trained model selected for this project. It combines many decision trees and averages their predictions, which usually gives a more stable wine-quality score than a single tree.</p>
+      </article>
+      <article class="info-panel">
+        <h2>Model Performance</h2>
+        <div class="metric-list">
+          <div><span>MAE</span><strong>0.4296</strong></div>
+          <div><span>RMSE</span><strong>0.5730</strong></div>
+          <div><span>R2 Score</span><strong>0.4911</strong></div>
+        </div>
+      </article>
+    </section>
 
     <form method="post" action="/">
       <div class="grid">
