@@ -380,7 +380,7 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
       background: var(--accent-dark);
     }}
 
-    .secondary-action {{
+    button.secondary-action {{
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -389,10 +389,18 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
       border-radius: 6px;
       padding: 0 16px;
       color: var(--accent-dark);
-      background: rgba(255, 255, 255, 0.72);
+      background: rgba(255, 255, 255, 0.9);
       font-size: 15px;
       font-weight: 700;
       text-decoration: none;
+      box-shadow: none;
+      white-space: nowrap;
+    }}
+
+    button.secondary-action:hover {{
+      color: #5b0d19;
+      background: #fff0f2;
+      border-color: rgba(159, 23, 48, 0.46);
     }}
 
     .button-row {{
@@ -538,7 +546,7 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
       <div class="actions">
         <p>Model output is a predicted quality score, usually between 3 and 8 for this dataset.</p>
         <div class="button-row">
-          <button class="secondary-action" type="button" id="reset-sample">Reset Sample</button>
+          <button class="secondary-action" type="button" id="reset-sample">Reset Sample Values</button>
           <button type="submit">Predict Quality</button>
         </div>
       </div>
