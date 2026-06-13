@@ -4,7 +4,7 @@ import json
 import mimetypes
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import parse_qs
+from urllib.parse import parse_qs, urlparse
 
 import joblib
 import pandas as pd
@@ -150,7 +150,7 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
       color: var(--ink);
       background:
         linear-gradient(90deg, rgba(28, 12, 19, 0.82), rgba(28, 12, 19, 0.38)),
-        url("/assets/wine-background.png") center / cover fixed,
+        url("/assets/wine-background.png?v=2") center / cover fixed,
         var(--page);
     }}
 
@@ -390,15 +390,17 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
 
 class WinePredictionHandler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:
-        if self.path.startswith("/assets/"):
-            self.respond_asset(self.path.removeprefix("/assets/"))
+        request_path = urlparse(self.path).path
+
+        if request_path.startswith("/assets/"):
+            self.respond_asset(request_path.removeprefix("/assets/"))
             return
 
-        if self.path not in {"/", "/health"}:
+        if request_path not in {"/", "/health"}:
             self.send_error(404)
             return
 
-        if self.path == "/health":
+        if request_path == "/health":
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.end_headers()
