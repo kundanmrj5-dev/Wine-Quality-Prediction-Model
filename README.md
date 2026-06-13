@@ -5,8 +5,7 @@
   <img src="https://img.shields.io/badge/NumPy-Numerical%20Computing-blue?logo=numpy">
   <img src="https://img.shields.io/badge/Scikit--Learn-Machine%20Learning-orange?logo=scikitlearn">
 </p>
-## 🌐 Live Demo
-🔗 Website: https://your-project-link.vercel.app
+🌐 **Live Demo:** https://your-demo-link.com
 Machine learning project to predict wine quality scores from physicochemical features using Python and Scikit-learn.
 
 ## 🚀 Features
