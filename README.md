@@ -1,7 +1,53 @@
 # Wine Quality Prediction
+# 🍷 Wine Quality Prediction Model
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.10-blue?logo=python">
+  <img src="https://img.shields.io/badge/Pandas-Data%20Analysis-black?logo=pandas">
+  <img src="https://img.shields.io/badge/NumPy-Numerical%20Computing-blue?logo=numpy">
+  <img src="https://img.shields.io/badge/Scikit--Learn-Machine%20Learning-orange?logo=scikitlearn">
+  <img src="https://img.shields.io/badge/Matplotlib-Visualization-green">
+  <img src="https://img.shields.io/badge/Seaborn-Statistical%20Plots-blue">
+</p>
+![Status](https://img.shields.io/badge/Status-Completed-success)
+![ML Project](https://img.shields.io/badge/Project-Machine%20Learning-red)
+![Open Source](https://img.shields.io/badge/Open%20Source-Yes-brightgreen)
 
 Machine learning project to predict wine quality scores from physicochemical features using Python and Scikit-learn.
+# 🍷 Wine Quality Prediction Model
 
+[Badges Here]
+
+## 📌 Overview
+Short description of the project.
+
+## 🚀 Features
+- Comprehensive Exploratory Data Analysis (EDA)
+- Data Preprocessing and Feature Engineering
+- Interactive Visualizations for Data Insights
+- Machine Learning Model Development
+- Wine Quality Classification and Prediction
+- Model Performance Evaluation
+- Scalable and Reproducible Workflow
+
+## 🛠️ Tech Stack
+- Python
+- Pandas
+- NumPy
+- Matplotlib
+- Seaborn
+- Scikit-learn
+
+## 📂 Dataset
+Information about the dataset.
+
+## ⚙️ Installation
+Steps to run the project.
+
+## 📊 Results
+Model performance and outcomes.
+
+## 👨‍💻 Author
+Kundan Pandey
 ## App Screenshot
 
 ![Wine Quality Prediction app screenshot](assets/app-screenshot.png)
