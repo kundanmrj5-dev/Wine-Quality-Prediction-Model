@@ -1,5 +1,4 @@
 # Wine Quality Prediction
-# 🍷 Wine Quality Prediction Model
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.10-blue?logo=python">
   <img src="https://img.shields.io/badge/Pandas-Data%20Analysis-black?logo=pandas">
@@ -13,12 +12,6 @@
 ![Open Source](https://img.shields.io/badge/Open%20Source-Yes-brightgreen)
 
 Machine learning project to predict wine quality scores from physicochemical features using Python and Scikit-learn.
-# 🍷 Wine Quality Prediction Model
-
-[Badges Here]
-
-## 📌 Overview
-Short description of the project.
 
 ## 🚀 Features
 - Comprehensive Exploratory Data Analysis (EDA)
