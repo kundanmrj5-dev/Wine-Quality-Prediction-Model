@@ -63,6 +63,12 @@ data/winequality-red.csv
 
 The CSV should contain a target column named `quality`.
 
+Download the official red-wine dataset:
+
+```bash
+python src/download_data.py
+```
+
 If the dataset is not available, the project can generate a realistic sample dataset for demonstration:
 
 ```bash
@@ -114,6 +120,14 @@ The best model is saved to:
 models/wine_quality_model.joblib
 ```
 
+The model file is an active model bundle containing:
+
+- trained Scikit-learn pipeline
+- feature column order
+- selected model name
+- evaluation metrics
+- dataset shape used during training
+
 Evaluation results are saved to:
 
 ```text
@@ -154,4 +168,3 @@ Wine Quality Prediction - Machine Learning Project
 - Compared multiple regression algorithms and saved the best-performing model for future predictions.
 
 Skills: Python, Pandas, NumPy, EDA, Data Preprocessing, Data Visualization, Matplotlib, Seaborn, Scikit-learn, Machine Learning, Model Evaluation.
-

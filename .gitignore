@@ -2,10 +2,5 @@
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
-models/*.joblib
-outputs/*.png
-outputs/*.csv
-data/*.csv
 !models/.gitkeep
 !outputs/.gitkeep
-

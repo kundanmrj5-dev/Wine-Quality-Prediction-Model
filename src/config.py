@@ -8,7 +8,9 @@ MODELS_DIR = PROJECT_ROOT / "models"
 
 DATA_FILE = DATA_DIR / "winequality-red.csv"
 MODEL_FILE = MODELS_DIR / "wine_quality_model.joblib"
+MODEL_METADATA_FILE = MODELS_DIR / "model_metadata.json"
 METRICS_FILE = OUTPUTS_DIR / "metrics.csv"
+TRAINING_REPORT_FILE = OUTPUTS_DIR / "training_report.txt"
 FEATURE_IMPORTANCE_FILE = OUTPUTS_DIR / "feature_importance.png"
 
 TARGET_COLUMN = "quality"
@@ -28,4 +30,3 @@ FEATURE_COLUMNS = [
     "sulphates",
     "alcohol",
 ]
-

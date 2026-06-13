@@ -45,15 +45,25 @@ def main() -> None:
             f"Model not found at {MODEL_FILE}. Run training first: python src/train.py"
         )
 
-    model = joblib.load(MODEL_FILE)
+    model_artifact = joblib.load(MODEL_FILE)
+    if isinstance(model_artifact, dict) and "model" in model_artifact:
+        model = model_artifact["model"]
+        feature_columns = model_artifact.get("feature_columns", FEATURE_COLUMNS)
+        model_name = model_artifact.get("model_name", "trained model")
+    else:
+        model = model_artifact
+        feature_columns = FEATURE_COLUMNS
+        model_name = "trained model"
+
     sample = parse_sample(args)
+    sample = sample[feature_columns]
     prediction = float(model.predict(sample)[0])
 
     print("Input sample:")
     print(sample.to_string(index=False))
+    print(f"\nLoaded model: {model_name}")
     print(f"\nPredicted wine quality: {prediction:.2f}")
 
 
 if __name__ == "__main__":
     main()
-

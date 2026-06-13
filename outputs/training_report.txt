@@ -1,0 +1,13 @@
+Wine Quality Prediction - Training Report
+
+Dataset shape: 1599 rows x 12 columns
+Target column: quality
+Best model: Random Forest
+
+Evaluation metrics:
+            model    mae   rmse     r2
+    Random Forest 0.4296 0.5730 0.4911
+Gradient Boosting 0.4701 0.6074 0.4282
+Linear Regression 0.4951 0.6375 0.3703
+
+Lower MAE/RMSE is better. Higher R2 is better.

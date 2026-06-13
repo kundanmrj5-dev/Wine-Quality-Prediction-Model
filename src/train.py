@@ -1,3 +1,5 @@
+import json
+
 import joblib
 import matplotlib.pyplot as plt
 import numpy as np
@@ -15,11 +17,13 @@ from config import (
     FEATURE_IMPORTANCE_FILE,
     METRICS_FILE,
     MODEL_FILE,
+    MODEL_METADATA_FILE,
     MODELS_DIR,
     OUTPUTS_DIR,
     RANDOM_STATE,
     TARGET_COLUMN,
     TEST_SIZE,
+    TRAINING_REPORT_FILE,
 )
 from data_utils import load_wine_data
 
@@ -92,6 +96,22 @@ def save_feature_importance(best_model: Pipeline) -> None:
     plt.close()
 
 
+def save_training_report(metrics_table: pd.DataFrame, best_name: str, data_shape: tuple[int, int]) -> None:
+    report = [
+        "Wine Quality Prediction - Training Report",
+        "",
+        f"Dataset shape: {data_shape[0]} rows x {data_shape[1]} columns",
+        f"Target column: {TARGET_COLUMN}",
+        f"Best model: {best_name}",
+        "",
+        "Evaluation metrics:",
+        metrics_table.round(4).to_string(index=False),
+        "",
+        "Lower MAE/RMSE is better. Higher R2 is better.",
+    ]
+    TRAINING_REPORT_FILE.write_text("\n".join(report), encoding="utf-8")
+
+
 def main() -> None:
     OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
     MODELS_DIR.mkdir(parents=True, exist_ok=True)
@@ -123,8 +143,33 @@ def main() -> None:
 
     best_name = metrics_table.iloc[0]["model"]
     best_model = trained_models[best_name]
-    joblib.dump(best_model, MODEL_FILE)
+
+    best_metrics = metrics_table.iloc[0].to_dict()
+    model_bundle = {
+        "model": best_model,
+        "model_name": best_name,
+        "feature_columns": FEATURE_COLUMNS,
+        "target_column": TARGET_COLUMN,
+        "metrics": best_metrics,
+        "dataset_shape": data.shape,
+        "random_state": RANDOM_STATE,
+        "test_size": TEST_SIZE,
+    }
+    joblib.dump(model_bundle, MODEL_FILE)
+
+    metadata = {
+        "model_name": best_name,
+        "feature_columns": FEATURE_COLUMNS,
+        "target_column": TARGET_COLUMN,
+        "metrics": best_metrics,
+        "dataset_rows": int(data.shape[0]),
+        "dataset_columns": int(data.shape[1]),
+        "model_file": str(MODEL_FILE.name),
+    }
+    MODEL_METADATA_FILE.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+
     save_feature_importance(best_model)
+    save_training_report(metrics_table, best_name, data.shape)
 
     print("Model evaluation:")
     print(metrics_table.round(4).to_string(index=False))

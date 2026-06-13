@@ -18,3 +18,8 @@ If you do not have the dataset yet, generate a demo dataset:
 python src/data_utils.py --create-sample
 ```
 
+The included `winequality-red.csv` file is downloaded from the UCI Machine Learning Repository:
+
+```text
+https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv
+```
