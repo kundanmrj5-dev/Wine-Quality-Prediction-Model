@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/badge/Scikit--Learn-Machine%20Learning-orange?logo=scikitlearn">
 </p>
 ##🌐 Live Demo
- https://wine-quality-prediction.streamlit.app
+https://wine-quality-prediction-model.onrender.com/
 
 Machine learning project to predict wine quality scores from physicochemical features using Python and Scikit-learn.
 
