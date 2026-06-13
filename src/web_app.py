@@ -161,7 +161,8 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
     }}
 
     header {{
-      display: flex;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
       align-items: end;
       justify-content: space-between;
       gap: 24px;
@@ -173,6 +174,10 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
         linear-gradient(135deg, rgba(255, 250, 246, 0.96), rgba(255, 243, 234, 0.86)),
         linear-gradient(90deg, rgba(159, 23, 48, 0.16), transparent);
       box-shadow: 0 22px 50px rgba(10, 3, 6, 0.32);
+    }}
+
+    .hero-copy {{
+      min-width: 0;
     }}
 
     h1 {{
@@ -200,6 +205,39 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
       border-left: 3px solid var(--gold);
       background: rgba(255, 255, 255, 0.54);
       border-radius: 6px;
+    }}
+
+    .visual-stack {{
+      display: grid;
+      gap: 12px;
+      min-width: 0;
+    }}
+
+    .process-photo {{
+      position: relative;
+      margin: 0;
+      height: 190px;
+      overflow: hidden;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.42);
+      box-shadow: 0 18px 38px rgba(54, 16, 27, 0.22);
+      background: #2b1019;
+    }}
+
+    .process-photo img {{
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      filter: saturate(1.08) contrast(1.05);
+    }}
+
+    .process-photo::after {{
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 45%, rgba(24, 8, 14, 0.5));
+      pointer-events: none;
     }}
 
     .status strong {{
@@ -362,14 +400,19 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
 <body>
   <main>
     <header>
-      <div>
+      <div class="hero-copy">
         <h1>Wine Quality Prediction</h1>
         <p>Enter wine chemistry values and predict the quality score using the trained model.</p>
       </div>
-      <div class="status">
-        <strong>{model_name}</strong>
-        {html.escape(metric_line())}<br>
-        Dataset rows: {html.escape(str(dataset_rows))}
+      <div class="visual-stack">
+        <figure class="process-photo">
+          <img src="/assets/prediction-process.jpeg?v=1" alt="Wine chemistry analysis visual">
+        </figure>
+        <div class="status">
+          <strong>{model_name}</strong>
+          {html.escape(metric_line())}<br>
+          Dataset rows: {html.escape(str(dataset_rows))}
+        </div>
       </div>
     </header>
 
