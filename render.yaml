@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: wine-quality-prediction
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python src/web_app.py --host 0.0.0.0
+    healthCheckPath: /health

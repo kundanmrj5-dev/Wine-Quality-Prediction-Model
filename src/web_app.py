@@ -2,6 +2,7 @@ import argparse
 import html
 import json
 import mimetypes
+import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -24,6 +25,20 @@ DEFAULT_SAMPLE = {
     "pH": 3.51,
     "sulphates": 0.56,
     "alcohol": 9.4,
+}
+
+FIELD_RANGES = {
+    "fixed acidity": {"min": 4.0, "max": 16.5, "step": 0.1},
+    "volatile acidity": {"min": 0.1, "max": 1.7, "step": 0.01},
+    "citric acid": {"min": 0.0, "max": 1.1, "step": 0.01},
+    "residual sugar": {"min": 0.5, "max": 16.0, "step": 0.1},
+    "chlorides": {"min": 0.01, "max": 0.7, "step": 0.001},
+    "free sulfur dioxide": {"min": 1, "max": 75, "step": 1},
+    "total sulfur dioxide": {"min": 5, "max": 300, "step": 1},
+    "density": {"min": 0.98, "max": 1.01, "step": 0.0001},
+    "pH": {"min": 2.5, "max": 4.5, "step": 0.01},
+    "sulphates": {"min": 0.2, "max": 2.2, "step": 0.01},
+    "alcohol": {"min": 8.0, "max": 15.5, "step": 0.1},
 }
 
 
@@ -92,11 +107,15 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
         field_name = feature.replace(" ", "_")
         label = html.escape(feature.title())
         value = html.escape(str(values.get(feature, DEFAULT_SAMPLE[feature])))
+        field_range = FIELD_RANGES.get(feature, {"min": "", "max": "", "step": "any"})
+        min_value = html.escape(str(field_range["min"]))
+        max_value = html.escape(str(field_range["max"]))
+        step_value = html.escape(str(field_range["step"]))
         inputs.append(
             f"""
             <label>
               <span>{label}</span>
-              <input type="number" step="any" name="{field_name}" value="{value}" required>
+              <input type="number" min="{min_value}" max="{max_value}" step="{step_value}" name="{field_name}" value="{value}" required>
             </label>
             """
         )
@@ -314,6 +333,28 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
       background: var(--accent-dark);
     }}
 
+    .secondary-action {{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 44px;
+      border: 1px solid rgba(159, 23, 48, 0.28);
+      border-radius: 6px;
+      padding: 0 16px;
+      color: var(--accent-dark);
+      background: rgba(255, 255, 255, 0.72);
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+    }}
+
+    .button-row {{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }}
+
     .result {{
       display: flex;
       align-items: center;
@@ -391,6 +432,14 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
         width: 100%;
       }}
 
+      .button-row {{
+        margin-top: 12px;
+      }}
+
+      .secondary-action {{
+        width: 100%;
+      }}
+
       .result {{
         margin-top: 14px;
       }}
@@ -422,7 +471,10 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
       </div>
       <div class="actions">
         <p>Model output is a predicted quality score, usually between 3 and 8 for this dataset.</p>
-        <button type="submit">Predict Quality</button>
+        <div class="button-row">
+          <a class="secondary-action" href="/">Reset Sample</a>
+          <button type="submit">Predict Quality</button>
+        </div>
       </div>
       {result}
     </form>
@@ -494,8 +546,10 @@ class WinePredictionHandler(BaseHTTPRequestHandler):
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run the wine-quality prediction web app")
-    parser.add_argument("--host", default="127.0.0.1")
-    parser.add_argument("--port", type=int, default=8000)
+    default_port = int(os.environ.get("PORT", "8000"))
+    default_host = "0.0.0.0" if "PORT" in os.environ else "127.0.0.1"
+    parser.add_argument("--host", default=default_host)
+    parser.add_argument("--port", type=int, default=default_port)
     args = parser.parse_args()
 
     server = ThreadingHTTPServer((args.host, args.port), WinePredictionHandler)

@@ -156,6 +156,14 @@ Then open:
 http://127.0.0.1:8000
 ```
 
+The web page includes:
+
+- trained Random Forest model prediction
+- wine-chemistry input form with sensible value ranges
+- reset sample button for quick demos
+- local visual assets for a polished portfolio UI
+- `/health` endpoint for deployment checks
+
 Or pass custom values:
 
 ```bash
@@ -172,6 +180,41 @@ python src/predict.py ^
   --sulphates 0.56 ^
   --alcohol 9.4
 ```
+
+## Deploy Publicly
+
+The local URL only works on your computer:
+
+```text
+http://127.0.0.1:8000
+```
+
+For a public portfolio link, deploy the project as a Python web service on Render.
+
+This project includes:
+
+- `render.yaml`
+- `Procfile`
+- `/health` route
+- support for Render's `PORT` environment variable
+
+Render settings:
+
+```text
+Build Command: pip install -r requirements.txt
+Start Command: python src/web_app.py --host 0.0.0.0
+Health Check Path: /health
+```
+
+Deployment steps:
+
+1. Push this repository to GitHub.
+2. Open Render and create a new Web Service.
+3. Connect the GitHub repository.
+4. Use the build and start commands above.
+5. Deploy and copy the generated `onrender.com` URL.
+
+Render requires public web services to bind to `0.0.0.0` and use the provided port environment for incoming traffic. This app is already configured for that.
 
 ## Resume Description
 
