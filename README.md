@@ -43,12 +43,16 @@ Information about the dataset.
 ## ⚙️ Installation
 Steps to run the project.
 
-## 📊 Results
-Model performance and outcomes.
-
+## 📈 Results
+- Built a machine learning model for wine quality prediction.
+- Achieved reliable predictions using physicochemical features.
+- Evaluated model performance using Scikit-learn metrics.
+- 
 ## 👨‍💻 Author
 Kundan Pandey
-## App Screenshot
+- GitHub: https://github.com/kundanmrj5-dev
+- LinkedIn: https://www.linkedin.com/in/kundan-pandey-710185299
+
 
 ![Wine Quality Prediction app screenshot](assets/app-screenshot.png)
 
