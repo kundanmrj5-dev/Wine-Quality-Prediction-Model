@@ -27,16 +27,7 @@ Machine learning project to predict wine quality scores from physicochemical fea
 - Matplotlib
 - Seaborn
 - Scikit-learn
-- 
-## 📈 Results
-- Built a machine learning model for wine quality prediction.
-- Achieved reliable predictions using physicochemical features.
-- Evaluated model performance using Scikit-learn metrics.
-
-## 👨‍💻 Author
-Kundan Pandey
-- GitHub: https://github.com/kundanmrj5-dev
-- LinkedIn: https://www.linkedin.com/in/kundan-pandey-710185299
+ 
 ## 📂 Dataset
 Information about the dataset.
 
