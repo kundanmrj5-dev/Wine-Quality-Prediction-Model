@@ -1,13 +1,15 @@
 import argparse
 import html
 import json
+import mimetypes
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
 from urllib.parse import parse_qs
 
 import joblib
 import pandas as pd
 
-from config import FEATURE_COLUMNS, MODEL_FILE, MODEL_METADATA_FILE
+from config import ASSETS_DIR, FEATURE_COLUMNS, MODEL_FILE, MODEL_METADATA_FILE
 
 
 DEFAULT_SAMPLE = {
@@ -101,9 +103,19 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
 
     result = ""
     if prediction is not None:
+        if prediction >= 6.5:
+            category = "High quality"
+        elif prediction >= 5:
+            category = "Good everyday wine"
+        else:
+            category = "Lower quality"
+
         result = f"""
         <section class="result">
-          <span>Predicted Quality</span>
+          <div>
+            <span>Predicted Quality</span>
+            <small>{category}</small>
+          </div>
           <strong>{prediction:.2f}</strong>
         </section>
         """
@@ -117,13 +129,14 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
   <style>
     :root {{
       color-scheme: light;
-      --ink: #1f2933;
-      --muted: #627386;
-      --line: #d8dee6;
-      --accent: #8f1d2c;
-      --accent-dark: #6f1522;
-      --surface: #ffffff;
-      --page: #f6f3ef;
+      --ink: #251921;
+      --muted: #725d68;
+      --line: rgba(119, 67, 82, 0.22);
+      --accent: #9f1730;
+      --accent-dark: #72101f;
+      --gold: #d7a84f;
+      --surface: rgba(255, 250, 246, 0.94);
+      --page: #1c0c13;
     }}
 
     * {{
@@ -135,13 +148,16 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
       min-height: 100vh;
       font-family: Arial, Helvetica, sans-serif;
       color: var(--ink);
-      background: var(--page);
+      background:
+        linear-gradient(90deg, rgba(28, 12, 19, 0.82), rgba(28, 12, 19, 0.38)),
+        url("/assets/wine-background.png") center / cover fixed,
+        var(--page);
     }}
 
     main {{
-      width: min(1120px, calc(100% - 32px));
+      width: min(1180px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 32px 0;
+      padding: 28px 0 38px;
     }}
 
     header {{
@@ -150,21 +166,28 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
       justify-content: space-between;
       gap: 24px;
       margin-bottom: 24px;
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 8px;
+      padding: 24px;
+      background:
+        linear-gradient(135deg, rgba(255, 250, 246, 0.96), rgba(255, 243, 234, 0.86)),
+        linear-gradient(90deg, rgba(159, 23, 48, 0.16), transparent);
+      box-shadow: 0 22px 50px rgba(10, 3, 6, 0.32);
     }}
 
     h1 {{
       margin: 0 0 8px;
-      font-size: 32px;
+      font-size: 42px;
       line-height: 1.15;
       letter-spacing: 0;
+      color: #24131a;
     }}
 
     p {{
       margin: 0;
       color: var(--muted);
       line-height: 1.5;
+      font-size: 17px;
     }}
 
     .status {{
@@ -173,6 +196,10 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
       color: var(--muted);
       font-size: 14px;
       line-height: 1.5;
+      padding: 14px 16px;
+      border-left: 3px solid var(--gold);
+      background: rgba(255, 255, 255, 0.54);
+      border-radius: 6px;
     }}
 
     .status strong {{
@@ -186,7 +213,8 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 20px;
-      box-shadow: 0 12px 30px rgba(31, 41, 51, 0.08);
+      box-shadow: 0 22px 55px rgba(10, 3, 6, 0.35);
+      backdrop-filter: blur(6px);
     }}
 
     .grid {{
@@ -204,6 +232,7 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
     label span {{
       font-size: 13px;
       color: var(--muted);
+      font-weight: 700;
     }}
 
     input {{
@@ -214,7 +243,7 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
       padding: 0 10px;
       font-size: 15px;
       color: var(--ink);
-      background: #fff;
+      background: rgba(255, 255, 255, 0.92);
     }}
 
     input:focus {{
@@ -240,6 +269,7 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
+      box-shadow: 0 10px 20px rgba(159, 23, 48, 0.28);
     }}
 
     button:hover {{
@@ -255,12 +285,23 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
       padding: 16px;
       border: 1px solid #e2c4ca;
       border-radius: 8px;
-      background: #fff7f8;
+      background:
+        linear-gradient(135deg, rgba(255, 250, 246, 0.98), rgba(255, 238, 232, 0.92));
+      box-shadow: inset 4px 0 0 var(--gold);
     }}
 
     .result span {{
+      display: block;
       color: var(--muted);
       font-size: 14px;
+    }}
+
+    .result small {{
+      display: block;
+      margin-top: 4px;
+      color: var(--accent-dark);
+      font-size: 16px;
+      font-weight: 700;
     }}
 
     .result strong {{
@@ -276,6 +317,8 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
       .status {{
         margin-top: 14px;
         text-align: left;
+        border-left: 0;
+        border-top: 3px solid var(--gold);
       }}
 
       .grid {{
@@ -290,7 +333,7 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
       }}
 
       h1 {{
-        font-size: 28px;
+        font-size: 31px;
       }}
 
       form {{
@@ -347,6 +390,10 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
 
 class WinePredictionHandler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:
+        if self.path.startswith("/assets/"):
+            self.respond_asset(self.path.removeprefix("/assets/"))
+            return
+
         if self.path not in {"/", "/health"}:
             self.send_error(404)
             return
@@ -379,6 +426,22 @@ class WinePredictionHandler(BaseHTTPRequestHandler):
         self.send_header("Content-Length", str(len(encoded)))
         self.end_headers()
         self.wfile.write(encoded)
+
+    def respond_asset(self, asset_name: str) -> None:
+        asset_path = (ASSETS_DIR / asset_name).resolve()
+        assets_root = ASSETS_DIR.resolve()
+
+        if assets_root not in asset_path.parents or not asset_path.exists():
+            self.send_error(404)
+            return
+
+        content_type = mimetypes.guess_type(asset_path.name)[0] or "application/octet-stream"
+        content = Path(asset_path).read_bytes()
+        self.send_response(200)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(len(content)))
+        self.end_headers()
+        self.wfile.write(content)
 
     def log_message(self, format: str, *args) -> None:
         return
