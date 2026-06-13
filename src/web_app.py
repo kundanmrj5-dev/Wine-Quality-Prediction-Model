@@ -279,7 +279,27 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
       }}
 
       .grid {{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }}
+    }}
+
+    @media (max-width: 560px) {{
+      main {{
+        width: min(100% - 20px, 1120px);
+        padding: 18px 0;
+      }}
+
+      h1 {{
+        font-size: 28px;
+      }}
+
+      form {{
+        padding: 14px;
+      }}
+
+      .grid {{
         grid-template-columns: 1fr;
+        gap: 10px;
       }}
 
       .actions {{
