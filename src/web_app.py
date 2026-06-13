@@ -115,7 +115,7 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
             f"""
             <label>
               <span>{label}</span>
-              <input type="number" min="{min_value}" max="{max_value}" step="{step_value}" name="{field_name}" value="{value}" required>
+              <input type="number" min="{min_value}" max="{max_value}" step="{step_value}" name="{field_name}" value="{value}" data-default="{html.escape(str(DEFAULT_SAMPLE[feature]))}" required>
             </label>
             """
         )
@@ -538,13 +538,28 @@ def render_page(values: dict[str, float] | None = None, prediction: float | None
       <div class="actions">
         <p>Model output is a predicted quality score, usually between 3 and 8 for this dataset.</p>
         <div class="button-row">
-          <a class="secondary-action" href="/">Reset Sample</a>
+          <button class="secondary-action" type="button" id="reset-sample">Reset Sample</button>
           <button type="submit">Predict Quality</button>
         </div>
       </div>
       {result}
     </form>
   </main>
+  <script>
+    var resetButton = document.querySelector("#reset-sample");
+    if (resetButton) {{
+      resetButton.addEventListener("click", function () {{
+        document.querySelectorAll("input[data-default]").forEach(function (input) {{
+          input.value = input.dataset.default;
+        }});
+
+        var result = document.querySelector(".result");
+        if (result) {{
+          result.remove();
+        }}
+      }});
+    }}
+  </script>
 </body>
 </html>"""
 
