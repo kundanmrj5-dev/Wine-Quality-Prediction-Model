@@ -2,6 +2,10 @@
 
 Machine learning project to predict wine quality scores from physicochemical features using Python and Scikit-learn.
 
+## App Screenshot
+
+![Wine Quality Prediction app screenshot](assets/app-screenshot.png)
+
 ## Project Overview
 
 This project covers the full ML workflow:
@@ -27,6 +31,10 @@ This project covers the full ML workflow:
 
 ```text
 wine-quality-prediction/
+├── assets/
+│   ├── app-screenshot.png
+│   ├── prediction-process.jpeg
+│   └── wine-background.png
 ├── data/
 │   └── README.md
 ├── models/
@@ -41,8 +49,11 @@ wine-quality-prediction/
 │   ├── data_utils.py
 │   ├── eda.py
 │   ├── predict.py
-│   └── train.py
+│   ├── train.py
+│   └── web_app.py
+├── Procfile
 ├── .gitignore
+├── render.yaml
 ├── requirements.txt
 └── README.md
 ```
