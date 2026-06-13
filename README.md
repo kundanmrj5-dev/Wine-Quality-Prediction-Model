@@ -1,4 +1,4 @@
-# Wine Quality Prediction
+# 🍷 Wine Quality Prediction Model
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.10-blue?logo=python">
   <img src="https://img.shields.io/badge/Pandas-Data%20Analysis-black?logo=pandas">
